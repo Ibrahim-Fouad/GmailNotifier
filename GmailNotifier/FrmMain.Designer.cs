@@ -48,12 +48,14 @@
             // 
             // btnStop
             // 
+            this.btnStop.Enabled = false;
             this.btnStop.Location = new System.Drawing.Point(164, 12);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(146, 36);
             this.btnStop.TabIndex = 1;
             this.btnStop.Text = "Stop Notifier";
             this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // label1
             // 

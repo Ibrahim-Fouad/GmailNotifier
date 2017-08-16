@@ -1,7 +1,6 @@
 ﻿using Google.Apis.Gmail.v1;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Thread = System.Threading.Thread;
@@ -11,21 +10,21 @@ namespace GmailNotifier
     public partial class FrmMain : Form
     {
         private Gmail _gmail = Gmail.Instance;
-        private List<string> idsList;
+        private List<string> idsList = new List<string>();
 
         private bool _isRunning = false;
 
         public FrmMain()
         {
             InitializeComponent();
-            CheckForIllegalCrossThreadCalls = false;
-            idsList = new List<string>();
-            LoadIds();
+            CheckForIllegalCrossThreadCalls = false; // For debug only!
         }
 
         private async void btnStart_Click( object sender, System.EventArgs e )
         {
             _isRunning = true;
+            btnStart.Enabled = false;
+            btnStop.Enabled = true;
             await Check( ( byte )numericSeconds.Value );
         }
 
@@ -86,18 +85,11 @@ namespace GmailNotifier
         }
 
 
-        private void LoadIds()
+        private void btnStop_Click( object sender, EventArgs e )
         {
-            var filePath = Path.Combine( Application.StartupPath, "ids.txt" );
-            if ( File.Exists( filePath ) )
-            {
-                idsList.AddRange( new StreamReader( filePath ).ReadToEnd()
-                    .Split( new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries ) );
-            }
-            else
-            {
-                File.WriteAllText( filePath, null );
-            }
+            _isRunning = false;
+            btnStart.Enabled = true;
+            btnStop.Enabled = false;
         }
     }
 }
